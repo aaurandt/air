@@ -43,6 +43,7 @@ import org.sireum.message.Position
                              val initializes: Option[GclInitialize],
                              val integration: Option[GclIntegration],
                              val compute: Option[GclCompute],
+                             val monitor: Option[GclMonitor],
                              @hidden val attr: Attr) extends AnnexClause with GclSymbol {
   @strictpure override def posOpt: Option[Position] = attr.posOpt
 
@@ -76,13 +77,19 @@ import org.sireum.message.Position
         st"""compute
             |  ${compute.get.string}""")
       else None()
+    val smonitor: Option[ST] =
+      if (monitor.nonEmpty) Some(
+        st"""monitor
+            |  ${monitor.get.string}""")
+      else None()  
 
     return (
       st"""$sstate
           |$smethods
           |$sinvariants
           |$sintegration
-          |$scompute""")
+          |$scompute
+          |$smonitor""")
   }
 }
 
@@ -296,6 +303,26 @@ import org.sireum.message.Position
           |$scases
           |$shandles
           |$sflows""")
+  }
+}
+
+@datatype class GclMonitor(val guarantees: ISZ[GclGuarantee],
+                           @hidden val attr: Attr) extends GclSymbol {
+  @strictpure override def posOpt: Option[Position] = attr.posOpt
+
+
+  override def string: String = {
+    return prettyST.render
+  }
+
+  @pure def prettyST: ST = {
+    val sguarantees: Option[ST] =
+      if (guarantees.nonEmpty) Some(
+        st"${(guarantees, "\n")}")
+      else None()
+
+    return (
+      st"""$sguarantees""")
   }
 }
 
