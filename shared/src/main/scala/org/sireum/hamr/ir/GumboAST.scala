@@ -44,6 +44,7 @@ import org.sireum.message.Position
                              val integration: Option[GclIntegration],
                              val compute: Option[GclCompute],
                              val monitor: Option[GclMonitor],
+                             val compositions: ISZ[GclComposition],
                              @hidden val attr: Attr) extends AnnexClause with GclSymbol {
   @strictpure override def posOpt: Option[Position] = attr.posOpt
 
@@ -72,6 +73,11 @@ import org.sireum.message.Position
         st"""integration
             |  ${integration.get.string}""")
       else None()
+    val sinitializes: Option[ST] =
+      if (initializes.nonEmpty) Some(
+        st"""initializes
+            |  ${initializes.get.string}""")
+      else None()
     val scompute: Option[ST] =
       if (compute.nonEmpty) Some(
         st"""compute
@@ -82,14 +88,19 @@ import org.sireum.message.Position
         st"""monitor
             |  ${monitor.get.string}""")
       else None()  
+    val scompositions: Option[ST] =
+      if (compositions.nonEmpty) Some(st"${(for (c <- compositions) yield c.prettyST, "\n")}")
+      else None()
 
     return (
       st"""$sstate
           |$smethods
           |$sinvariants
           |$sintegration
+          |$sinitializes
           |$scompute
-          |$smonitor""")
+          |$smonitor
+          |$scompositions""")
   }
 }
 
@@ -363,6 +374,278 @@ import org.sireum.message.Position
           |  $sguarantees
           |  $scases""")
   }
+}
+
+// ---- Composition (system-level contracts for system implementations) ----
+//
+// A composition separates the schedule *schema* (component ordering, splits/
+// joins) from named *properties* (assertion decorations of schema points); each
+// property yields its own VC set over the shared net, and the required id names
+// the per-composition artifacts (sys_proof_<id> crate, runtime monitor, meta
+// program). See design D8 of VCGenerationDesign.md in the
+// hamr-system-reasoning-prototype repo.
+
+@datatype class GclComposition(val id: String,
+                               val componentAliases: ISZ[GclCompositionComponentAlias],
+                               val portAliases: ISZ[GclCompositionPortAlias],
+                               val stateVarAliases: ISZ[GclCompositionStateVarAlias],
+                               val schema: ISZ[GclSchemaElement],
+                               val properties: ISZ[GclCompositionProperty],
+                               @hidden val attr: Attr) extends GclNamedElement {
+  @strictpure override def posOpt: Option[Position] = attr.posOpt
+
+  override def string: String = {
+    return prettyST.render
+  }
+
+  @pure def prettyST: ST = {
+    val scomponents: Option[ST] =
+      if (componentAliases.nonEmpty) Some(
+        st"""components
+            |  ${(for (a <- componentAliases) yield a.prettyST, "\n")}""")
+      else None()
+    val sports: Option[ST] =
+      if (portAliases.nonEmpty) Some(
+        st"""ports
+            |  ${(for (a <- portAliases) yield a.prettyST, "\n")}""")
+      else None()
+    val sstatevars: Option[ST] =
+      if (stateVarAliases.nonEmpty) Some(
+        st"""state
+            |  ${(for (a <- stateVarAliases) yield a.prettyST, "\n")}""")
+      else None()
+    val sproperties: Option[ST] =
+      if (properties.nonEmpty) Some(st"${(for (p <- properties) yield p.prettyST, "\n")}")
+      else None()
+    return (
+      st"""composition $id {
+          |  $scomponents
+          |  $sports
+          |  $sstatevars
+          |  schema {
+          |    ${(for (e <- schema) yield e.prettyST, "\n")}
+          |  }
+          |  $sproperties
+          |}""")
+  }
+}
+
+@datatype class GclCompositionComponentAlias(val name: String,
+                                             val componentPath: Name,
+                                             @hidden val attr: Attr) extends GclNamedElement {
+  @strictpure override def id: String = name
+
+  @strictpure override def posOpt: Option[Position] = attr.posOpt
+
+  override def string: String = {
+    return prettyST.render
+  }
+
+  @strictpure def prettyST: ST = st"""$name = ${(componentPath.name, ".")};"""
+}
+
+@datatype class GclCompositionPortAlias(val name: String,
+                                        val portPath: Name,
+                                        @hidden val attr: Attr) extends GclNamedElement {
+  @strictpure override def id: String = name
+
+  @strictpure override def posOpt: Option[Position] = attr.posOpt
+
+  override def string: String = {
+    return prettyST.render
+  }
+
+  @strictpure def prettyST: ST = st"""$name = ${(portPath.name, ".")};"""
+}
+
+@datatype class GclCompositionStateVarAlias(val name: String,
+                                            val stateVarPath: Name,
+                                            @hidden val attr: Attr) extends GclNamedElement {
+  @strictpure override def id: String = name
+
+  @strictpure override def posOpt: Option[Position] = attr.posOpt
+
+  override def string: String = {
+    return prettyST.render
+  }
+
+  @strictpure def prettyST: ST = st"""$name = ${(stateVarPath.name, ".")};"""
+}
+
+// Schema elements: the skeleton only -- no assertions. Within a sequence,
+// elements are ';'-separated (order is claimed); the branches of a split are
+// ','-separated (order is deliberately not claimed).
+
+@sig trait GclSchemaElement extends GclSymbol {
+  @pure def prettyST: ST
+}
+
+// A component dispatch. `occurrenceLabelOpt` (concrete syntax `<alias> @ <id>`)
+// is required by the resolver when the component fires more than once per
+// hyperperiod: it disambiguates the `before`/`after` point names and names the
+// occurrence's generated proof fns.
+@datatype class GclSchemaComponentRef(val component: Name,
+                                      val occurrenceLabelOpt: Option[String],
+                                      @hidden val attr: Attr) extends GclSchemaElement {
+  @strictpure override def posOpt: Option[Position] = attr.posOpt
+
+  override def string: String = {
+    return prettyST.render
+  }
+
+  @strictpure def prettyST: ST = occurrenceLabelOpt match {
+    case Some(l) => st"""${(component.name, ".")} @ $l"""
+    case _ => st"""${(component.name, ".")}"""
+  }
+}
+
+// Names the place at this position (concrete syntax `label <id>;`). Purely
+// naming, never structural: the place exists regardless; a label is needed only
+// when a property must bind a point with no unambiguous derived name (e.g.,
+// between a join and the next split).
+@datatype class GclSchemaLabel(val id: String,
+                               @hidden val attr: Attr) extends GclSchemaElement with GclNamedElement {
+  @strictpure override def posOpt: Option[Position] = attr.posOpt
+
+  override def string: String = {
+    return prettyST.render
+  }
+
+  @strictpure def prettyST: ST = st"label $id;"
+}
+
+@datatype class GclSchemaSplitJoin(val branches: ISZ[GclSchemaSequence],
+                                   @hidden val attr: Attr) extends GclSchemaElement {
+  @strictpure override def posOpt: Option[Position] = attr.posOpt
+
+  override def string: String = {
+    return prettyST.render
+  }
+
+  @pure def prettyST: ST = {
+    return (
+      st"""split {
+          |  ${(for (s <- branches) yield s.prettyST, ",\n")}
+          |}""")
+  }
+}
+
+@datatype class GclSchemaSequence(val elements: ISZ[GclSchemaElement],
+                                  @hidden val attr: Attr) extends GclSymbol {
+  @strictpure override def posOpt: Option[Position] = attr.posOpt
+
+  override def string: String = {
+    return prettyST.render
+  }
+
+  @pure def prettyST: ST = {
+    return (
+      st"""sequence {
+          |  ${(for (e <- elements) yield e.prettyST, ";\n")}
+          |}""")
+  }
+}
+
+// A named assertion decoration of the schema. Each property generates its own
+// VC set over the shared net; a property's VCs see only its own bindings, and
+// unbound points lower to `true` (design D5).
+@datatype class GclCompositionProperty(val id: String,
+                                       val descriptor: Option[String],
+                                       val bindings: ISZ[GclPropertyBinding],
+                                       @hidden val attr: Attr) extends GclClause {
+  @strictpure override def posOpt: Option[Position] = attr.posOpt
+
+  override def string: String = {
+    return prettyST.render
+  }
+
+  @pure def prettyST: ST = {
+    return (
+      st"""property $id $descriptor {
+          |  ${(for (b <- bindings) yield b.prettyST, "\n")}
+          |}""")
+  }
+}
+
+// One point-to-assertion binding within a property.
+@datatype class GclPropertyBinding(val point: GclSchemaPoint,
+                                   val descriptor: Option[String],
+                                   val exp: org.sireum.lang.ast.Exp,
+                                   @hidden val attr: Attr) extends GclSymbol {
+  @strictpure override def posOpt: Option[Position] = attr.posOpt
+
+  override def string: String = {
+    return prettyST.render
+  }
+
+  @pure def prettyST: ST = {
+    return st"""${point.prettyST} $descriptor: ${exp.string};"""
+  }
+}
+
+// A reference to a schema point. Consecutive elements share a place, so a place
+// can have several names (e.g., `after mrm` == `before mhs` == a label there);
+// a property may bind a given place through only one of them (resolver lint).
+@sig trait GclSchemaPoint extends GclSymbol {
+  @pure def prettyST: ST
+}
+
+@datatype class GclPointStart(@hidden val attr: Attr) extends GclSchemaPoint {
+  @strictpure override def posOpt: Option[Position] = attr.posOpt
+
+  override def string: String = {
+    return prettyST.render
+  }
+
+  @strictpure def prettyST: ST = st"at START"
+}
+
+@datatype class GclPointEnd(@hidden val attr: Attr) extends GclSchemaPoint {
+  @strictpure override def posOpt: Option[Position] = attr.posOpt
+
+  override def string: String = {
+    return prettyST.render
+  }
+
+  @strictpure def prettyST: ST = st"at END"
+}
+
+// `at <label>` -- a place or occurrence label declared in the schema.
+@datatype class GclPointAt(val label: String,
+                           @hidden val attr: Attr) extends GclSchemaPoint {
+  @strictpure override def posOpt: Option[Position] = attr.posOpt
+
+  override def string: String = {
+    return prettyST.render
+  }
+
+  @strictpure def prettyST: ST = st"at $label"
+}
+
+// `before <occ>` -- the in-place of a component occurrence (= the branch-entry /
+// join-exit place when the occurrence leads a branch or follows a join). `occ`
+// is a component alias (unique occurrence) or an occurrence label.
+@datatype class GclPointBefore(val occurrence: String,
+                               @hidden val attr: Attr) extends GclSchemaPoint {
+  @strictpure override def posOpt: Option[Position] = attr.posOpt
+
+  override def string: String = {
+    return prettyST.render
+  }
+
+  @strictpure def prettyST: ST = st"before $occurrence"
+}
+
+// `after <occ>` -- the post-place of a component occurrence.
+@datatype class GclPointAfter(val occurrence: String,
+                              @hidden val attr: Attr) extends GclSchemaPoint {
+  @strictpure override def posOpt: Option[Position] = attr.posOpt
+
+  override def string: String = {
+    return prettyST.render
+  }
+
+  @strictpure def prettyST: ST = st"after $occurrence"
 }
 
 @datatype class GclTODO extends GclSymbol {

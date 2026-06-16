@@ -161,6 +161,23 @@ import org.sireum.hamr.ir.GclInitialize
 import org.sireum.hamr.ir.GclCompute
 import org.sireum.hamr.ir.GclMonitor
 import org.sireum.hamr.ir.GclHandle
+import org.sireum.hamr.ir.GclComposition
+import org.sireum.hamr.ir.GclCompositionComponentAlias
+import org.sireum.hamr.ir.GclCompositionPortAlias
+import org.sireum.hamr.ir.GclCompositionStateVarAlias
+import org.sireum.hamr.ir.GclSchemaElement
+import org.sireum.hamr.ir.GclSchemaComponentRef
+import org.sireum.hamr.ir.GclSchemaLabel
+import org.sireum.hamr.ir.GclSchemaSplitJoin
+import org.sireum.hamr.ir.GclSchemaSequence
+import org.sireum.hamr.ir.GclCompositionProperty
+import org.sireum.hamr.ir.GclPropertyBinding
+import org.sireum.hamr.ir.GclSchemaPoint
+import org.sireum.hamr.ir.GclPointStart
+import org.sireum.hamr.ir.GclPointEnd
+import org.sireum.hamr.ir.GclPointAt
+import org.sireum.hamr.ir.GclPointBefore
+import org.sireum.hamr.ir.GclPointAfter
 import org.sireum.hamr.ir.GclTODO
 import org.sireum.hamr.ir.GclLib
 import org.sireum.hamr.ir.InfoFlowClause
@@ -388,479 +405,509 @@ object MsgPack {
 
     val GclHandle: Z = 70
 
-    val GclTODO: Z = 71
+    val GclComposition: Z = 71
 
-    val GclLib: Z = 72
+    val GclCompositionComponentAlias: Z = 72
 
-    val InfoFlowClause: Z = 73
+    val GclCompositionPortAlias: Z = 73
 
-    val SmfClause: Z = 74
+    val GclCompositionStateVarAlias: Z = 74
 
-    val SmfClassification: Z = 75
+    val GclSchemaComponentRef: Z = 75
 
-    val SmfDeclass: Z = 76
+    val GclSchemaLabel: Z = 76
 
-    val SmfLibrary: Z = 77
+    val GclSchemaSplitJoin: Z = 77
 
-    val SmfType: Z = 78
+    val GclSchemaSequence: Z = 78
 
-    val SysmlAstId: Z = 79
+    val GclCompositionProperty: Z = 79
 
-    val SysmlAstName: Z = 80
+    val GclPropertyBinding: Z = 80
 
-    val SysmlAstTopUnit: Z = 81
+    val GclPointStart: Z = 81
 
-    val SysmlAstFeatureValue: Z = 82
+    val GclPointEnd: Z = 82
 
-    val SysmlAstEnumeratedValue: Z = 83
+    val GclPointAt: Z = 83
 
-    val SysmlAstImport: Z = 84
+    val GclPointBefore: Z = 84
 
-    val SysmlAstAliasMember: Z = 85
+    val GclPointAfter: Z = 85
 
-    val SysmlAstIdentification: Z = 86
+    val GclTODO: Z = 86
 
-    val SysmlAstConnectorEnd: Z = 87
+    val GclLib: Z = 87
 
-    val SysmlAstBinaryConnectorPart: Z = 88
+    val InfoFlowClause: Z = 88
 
-    val SysmlAstNaryConnectorPart: Z = 89
+    val SmfClause: Z = 89
 
-    val SysmlAstMultiplicityNonRange: Z = 90
+    val SmfClassification: Z = 90
 
-    val SysmlAstMultiplicityRange: Z = 91
+    val SmfDeclass: Z = 91
 
-    val SysmlAstTypingsSpecialization: Z = 92
+    val SmfLibrary: Z = 92
 
-    val SysmlAstSubsettingsSpecialization: Z = 93
+    val SmfType: Z = 93
 
-    val SysmlAstReferencesSpecialization: Z = 94
+    val SysmlAstId: Z = 94
 
-    val SysmlAstCrossingsSpecialization: Z = 95
+    val SysmlAstName: Z = 95
 
-    val SysmlAstRedefinitionsSpecialization: Z = 96
+    val SysmlAstTopUnit: Z = 96
 
-    val SysmlAstDefinitionPrefix: Z = 97
+    val SysmlAstFeatureValue: Z = 97
 
-    val SysmlAstPackage: Z = 98
+    val SysmlAstEnumeratedValue: Z = 98
 
-    val SysmlAstAttributeDefinition: Z = 99
+    val SysmlAstImport: Z = 99
 
-    val SysmlAstOccurrenceDefinitionPrefix: Z = 100
+    val SysmlAstAliasMember: Z = 100
 
-    val SysmlAstAllocationDefinition: Z = 101
+    val SysmlAstIdentification: Z = 101
 
-    val SysmlAstConnectionDefinition: Z = 102
+    val SysmlAstConnectorEnd: Z = 102
 
-    val SysmlAstInterfaceDefinition: Z = 103
+    val SysmlAstBinaryConnectorPart: Z = 103
 
-    val SysmlAstEnumerationDefinition: Z = 104
+    val SysmlAstNaryConnectorPart: Z = 104
 
-    val SysmlAstPartDefinition: Z = 105
+    val SysmlAstMultiplicityNonRange: Z = 105
 
-    val SysmlAstPortDefinition: Z = 106
+    val SysmlAstMultiplicityRange: Z = 106
 
-    val SysmlAstMetadataDefinition: Z = 107
+    val SysmlAstTypingsSpecialization: Z = 107
 
-    val SysmlAstCommonUsageElements: Z = 108
+    val SysmlAstSubsettingsSpecialization: Z = 108
 
-    val SysmlAstRefPrefix: Z = 109
+    val SysmlAstReferencesSpecialization: Z = 109
 
-    val SysmlAstEndUsage: Z = 110
+    val SysmlAstCrossingsSpecialization: Z = 110
 
-    val SysmlAstUsagePrefix: Z = 111
+    val SysmlAstRedefinitionsSpecialization: Z = 111
 
-    val SysmlAstAttributeUsage: Z = 112
+    val SysmlAstDefinitionPrefix: Z = 112
 
-    val SysmlAstReferenceUsage: Z = 113
+    val SysmlAstPackage: Z = 113
 
-    val SysmlAstOccurrenceBasicUsagePrefix: Z = 114
+    val SysmlAstAttributeDefinition: Z = 114
 
-    val SysmlAstOccurrenceEndUsagePrefix: Z = 115
+    val SysmlAstOccurrenceDefinitionPrefix: Z = 115
 
-    val SysmlAstAllocationUsage: Z = 116
+    val SysmlAstAllocationDefinition: Z = 116
 
-    val SysmlAstConnectionUsage: Z = 117
+    val SysmlAstConnectionDefinition: Z = 117
 
-    val SysmlAstItemUsage: Z = 118
+    val SysmlAstInterfaceDefinition: Z = 118
 
-    val SysmlAstPartUsage: Z = 119
+    val SysmlAstEnumerationDefinition: Z = 119
 
-    val SysmlAstPortUsage: Z = 120
+    val SysmlAstPartDefinition: Z = 120
 
-    val SysmlAstComment: Z = 121
+    val SysmlAstPortDefinition: Z = 121
 
-    val SysmlAstDocumentation: Z = 122
+    val SysmlAstMetadataDefinition: Z = 122
 
-    val SysmlAstTextualRepresentation: Z = 123
+    val SysmlAstCommonUsageElements: Z = 123
 
-    val SysmlAstGumboAnnotation: Z = 124
+    val SysmlAstRefPrefix: Z = 124
 
-    val Attr: Z = 125
+    val SysmlAstEndUsage: Z = 125
 
-    val ResolvedAttr: Z = 126
+    val SysmlAstUsagePrefix: Z = 126
 
-    val ResolvedInfoBuiltIn: Z = 127
+    val SysmlAstAttributeUsage: Z = 127
 
-    val ResolvedInfoPackage: Z = 128
+    val SysmlAstReferenceUsage: Z = 128
 
-    val ResolvedInfoEnum: Z = 129
+    val SysmlAstOccurrenceBasicUsagePrefix: Z = 129
 
-    val ResolvedInfoEnumElement: Z = 130
+    val SysmlAstOccurrenceEndUsagePrefix: Z = 130
 
-    val ResolvedInfoAllocationUsage: Z = 131
+    val SysmlAstAllocationUsage: Z = 131
 
-    val ResolvedInfoAttributeUsage: Z = 132
+    val SysmlAstConnectionUsage: Z = 132
 
-    val ResolvedInfoConnectionUsage: Z = 133
+    val SysmlAstItemUsage: Z = 133
 
-    val ResolvedInfoItemUsage: Z = 134
+    val SysmlAstPartUsage: Z = 134
 
-    val ResolvedInfoPartUsage: Z = 135
+    val SysmlAstPortUsage: Z = 135
 
-    val ResolvedInfoPortUsage: Z = 136
+    val SysmlAstComment: Z = 136
 
-    val ResolvedInfoReferenceUsage: Z = 137
+    val SysmlAstDocumentation: Z = 137
 
-    val TypeNamed: Z = 138
+    val SysmlAstTextualRepresentation: Z = 138
 
-    val TypedAttr: Z = 139
+    val SysmlAstGumboAnnotation: Z = 139
 
-    val TypedPackage: Z = 140
+    val Attr: Z = 140
 
-    val TypedName: Z = 141
+    val ResolvedAttr: Z = 141
 
-    val TypedEnum: Z = 142
+    val ResolvedInfoBuiltIn: Z = 142
 
-    val _langastTopUnitProgram: Z = 143
+    val ResolvedInfoPackage: Z = 143
 
-    val _langastTopUnitTruthTableUnit: Z = 144
+    val ResolvedInfoEnum: Z = 144
 
-    val _langastLoopContract: Z = 145
+    val ResolvedInfoEnumElement: Z = 145
 
-    val _langastStmtImport: Z = 146
+    val ResolvedInfoAllocationUsage: Z = 146
 
-    val _langastStmtImportImporter: Z = 147
+    val ResolvedInfoAttributeUsage: Z = 147
 
-    val _langastStmtImportMultiSelector: Z = 148
+    val ResolvedInfoConnectionUsage: Z = 148
 
-    val _langastStmtImportWildcardSelector: Z = 149
+    val ResolvedInfoItemUsage: Z = 149
 
-    val _langastStmtImportNamedSelector: Z = 150
+    val ResolvedInfoPartUsage: Z = 150
 
-    val _langastStmtVar: Z = 151
+    val ResolvedInfoPortUsage: Z = 151
 
-    val _langastStmtVarPattern: Z = 152
+    val ResolvedInfoReferenceUsage: Z = 152
 
-    val _langastStmtSpecVar: Z = 153
+    val TypeNamed: Z = 153
 
-    val _langastStmtRsVal: Z = 154
+    val TypedAttr: Z = 154
 
-    val _langastStmtMethod: Z = 155
+    val TypedPackage: Z = 155
 
-    val _langastStmtExtMethod: Z = 156
+    val TypedName: Z = 156
 
-    val _langastStmtJustMethod: Z = 157
+    val TypedEnum: Z = 157
 
-    val _langastStmtSpecMethod: Z = 158
+    val _langastTopUnitProgram: Z = 158
 
-    val _langastStmtEnum: Z = 159
+    val _langastTopUnitTruthTableUnit: Z = 159
 
-    val _langastStmtSubZ: Z = 160
+    val _langastLoopContract: Z = 160
 
-    val _langastStmtObject: Z = 161
+    val _langastStmtImport: Z = 161
 
-    val _langastStmtSig: Z = 162
+    val _langastStmtImportImporter: Z = 162
 
-    val _langastStmtAdt: Z = 163
+    val _langastStmtImportMultiSelector: Z = 163
 
-    val _langastStmtTypeAlias: Z = 164
+    val _langastStmtImportWildcardSelector: Z = 164
 
-    val _langastStmtAssign: Z = 165
+    val _langastStmtImportNamedSelector: Z = 165
 
-    val _langastStmtBlock: Z = 166
+    val _langastStmtVar: Z = 166
 
-    val _langastStmtIf: Z = 167
+    val _langastStmtVarPattern: Z = 167
 
-    val _langastStmtInduct: Z = 168
+    val _langastStmtSpecVar: Z = 168
 
-    val _langastStmtMatch: Z = 169
+    val _langastStmtRsVal: Z = 169
 
-    val _langastStmtWhile: Z = 170
+    val _langastStmtMethod: Z = 170
 
-    val _langastStmtFor: Z = 171
+    val _langastStmtExtMethod: Z = 171
 
-    val _langastStmtReturn: Z = 172
+    val _langastStmtJustMethod: Z = 172
 
-    val _langastStmtExpr: Z = 173
+    val _langastStmtSpecMethod: Z = 173
 
-    val _langastStmtFact: Z = 174
+    val _langastStmtEnum: Z = 174
 
-    val _langastStmtInv: Z = 175
+    val _langastStmtSubZ: Z = 175
 
-    val _langastStmtTheorem: Z = 176
+    val _langastStmtObject: Z = 176
 
-    val _langastStmtDataRefinement: Z = 177
+    val _langastStmtSig: Z = 177
 
-    val _langastStmtSpecLabel: Z = 178
+    val _langastStmtAdt: Z = 178
 
-    val _langastStmtSpecBlock: Z = 179
+    val _langastStmtTypeAlias: Z = 179
 
-    val _langastStmtDeduceSequent: Z = 180
+    val _langastStmtAssign: Z = 180
 
-    val _langastStmtDeduceSteps: Z = 181
+    val _langastStmtBlock: Z = 181
 
-    val _langastStmtHavoc: Z = 182
+    val _langastStmtIf: Z = 182
 
-    val _langastMethodContractAccesses: Z = 183
+    val _langastStmtInduct: Z = 183
 
-    val _langastMethodContractClaims: Z = 184
+    val _langastStmtMatch: Z = 184
 
-    val _langastMethodContractSimple: Z = 185
+    val _langastStmtWhile: Z = 185
 
-    val _langastMethodContractCases: Z = 186
+    val _langastStmtFor: Z = 186
 
-    val _langastMethodContractCase: Z = 187
+    val _langastStmtReturn: Z = 187
 
-    val _langastMethodContractInfoFlows: Z = 188
+    val _langastStmtExpr: Z = 188
 
-    val _langastMethodContractInfoFlowGroup: Z = 189
+    val _langastStmtFact: Z = 189
 
-    val _langastMethodContractInfoFlowFlow: Z = 190
+    val _langastStmtInv: Z = 190
 
-    val _langastMethodContractInfoFlowCase: Z = 191
+    val _langastStmtTheorem: Z = 191
 
-    val _langastSequent: Z = 192
+    val _langastStmtDataRefinement: Z = 192
 
-    val _langastProofAst: Z = 193
+    val _langastStmtSpecLabel: Z = 193
 
-    val _langastProofAstStepIdNum: Z = 194
+    val _langastStmtSpecBlock: Z = 194
 
-    val _langastProofAstStepIdStr: Z = 195
+    val _langastStmtDeduceSequent: Z = 195
 
-    val _langastProofAstStepRegular: Z = 196
+    val _langastStmtDeduceSteps: Z = 196
 
-    val _langastProofAstStepAssume: Z = 197
+    val _langastStmtHavoc: Z = 197
 
-    val _langastProofAstStepAssert: Z = 198
+    val _langastMethodContractAccesses: Z = 198
 
-    val _langastProofAstStepSubProof: Z = 199
+    val _langastMethodContractClaims: Z = 199
 
-    val _langastProofAstStepLet: Z = 200
+    val _langastMethodContractSimple: Z = 200
 
-    val _langastProofAstStepLetParam: Z = 201
+    val _langastMethodContractCases: Z = 201
 
-    val _langastProofAstStepJustificationRef: Z = 202
+    val _langastMethodContractCase: Z = 202
 
-    val _langastProofAstStepJustificationApply: Z = 203
+    val _langastMethodContractInfoFlows: Z = 203
 
-    val _langastProofAstStepJustificationApplyNamed: Z = 204
+    val _langastMethodContractInfoFlowGroup: Z = 204
 
-    val _langastProofAstStepJustificationApplyEta: Z = 205
+    val _langastMethodContractInfoFlowFlow: Z = 205
 
-    val _langastCase: Z = 206
+    val _langastMethodContractInfoFlowCase: Z = 206
 
-    val _langastEnumGenRangeExpr: Z = 207
+    val _langastSequent: Z = 207
 
-    val _langastEnumGenRangeStep: Z = 208
+    val _langastProofAst: Z = 208
 
-    val _langastEnumGenFor: Z = 209
+    val _langastProofAstStepIdNum: Z = 209
 
-    val _langastTypeNamed: Z = 210
+    val _langastProofAstStepIdStr: Z = 210
 
-    val _langastTypeFun: Z = 211
+    val _langastProofAstStepRegular: Z = 211
 
-    val _langastTypeTuple: Z = 212
+    val _langastProofAstStepAssume: Z = 212
 
-    val _langastPatternLiteral: Z = 213
+    val _langastProofAstStepAssert: Z = 213
 
-    val _langastPatternLitInterpolate: Z = 214
+    val _langastProofAstStepSubProof: Z = 214
 
-    val _langastPatternRef: Z = 215
+    val _langastProofAstStepLet: Z = 215
 
-    val _langastPatternVarBinding: Z = 216
+    val _langastProofAstStepLetParam: Z = 216
 
-    val _langastPatternWildcard: Z = 217
+    val _langastProofAstStepJustificationRef: Z = 217
 
-    val _langastPatternSeqWildcard: Z = 218
+    val _langastProofAstStepJustificationApply: Z = 218
 
-    val _langastPatternStructure: Z = 219
+    val _langastProofAstStepJustificationApplyNamed: Z = 219
 
-    val _langastExpLitB: Z = 220
+    val _langastProofAstStepJustificationApplyEta: Z = 220
 
-    val _langastExpLitC: Z = 221
+    val _langastCase: Z = 221
 
-    val _langastExpLitZ: Z = 222
+    val _langastEnumGenRangeExpr: Z = 222
 
-    val _langastExpLitF32: Z = 223
+    val _langastEnumGenRangeStep: Z = 223
 
-    val _langastExpLitF64: Z = 224
+    val _langastEnumGenFor: Z = 224
 
-    val _langastExpLitR: Z = 225
+    val _langastTypeNamed: Z = 225
 
-    val _langastExpLitString: Z = 226
+    val _langastTypeFun: Z = 226
 
-    val _langastExpStringInterpolate: Z = 227
+    val _langastTypeTuple: Z = 227
 
-    val _langastExpThis: Z = 228
+    val _langastPatternLiteral: Z = 228
 
-    val _langastExpSuper: Z = 229
+    val _langastPatternLitInterpolate: Z = 229
 
-    val _langastExpUnary: Z = 230
+    val _langastPatternRef: Z = 230
 
-    val _langastExpBinary: Z = 231
+    val _langastPatternVarBinding: Z = 231
 
-    val _langastExpIdent: Z = 232
+    val _langastPatternWildcard: Z = 232
 
-    val _langastExpEta: Z = 233
+    val _langastPatternSeqWildcard: Z = 233
 
-    val _langastExpTuple: Z = 234
+    val _langastPatternStructure: Z = 234
 
-    val _langastExpSelect: Z = 235
+    val _langastExpLitB: Z = 235
 
-    val _langastExpInvoke: Z = 236
+    val _langastExpLitC: Z = 236
 
-    val _langastExpInvokeNamed: Z = 237
+    val _langastExpLitZ: Z = 237
 
-    val _langastExpIf: Z = 238
+    val _langastExpLitF32: Z = 238
 
-    val _langastExpTypeCond: Z = 239
+    val _langastExpLitF64: Z = 239
 
-    val _langastExpSym: Z = 240
+    val _langastExpLitR: Z = 240
 
-    val _langastExpFunParam: Z = 241
+    val _langastExpLitString: Z = 241
 
-    val _langastExpFun: Z = 242
+    val _langastExpStringInterpolate: Z = 242
 
-    val _langastExpForYield: Z = 243
+    val _langastExpThis: Z = 243
 
-    val _langastExpQuantType: Z = 244
+    val _langastExpSuper: Z = 244
 
-    val _langastExpQuantRange: Z = 245
+    val _langastExpUnary: Z = 245
 
-    val _langastExpQuantEach: Z = 246
+    val _langastExpBinary: Z = 246
 
-    val _langastExpInput: Z = 247
+    val _langastExpIdent: Z = 247
 
-    val _langastExpOld: Z = 248
+    val _langastExpEta: Z = 248
 
-    val _langastExpRS: Z = 249
+    val _langastExpTuple: Z = 249
 
-    val _langastExpAt: Z = 250
+    val _langastExpSelect: Z = 250
 
-    val _langastExpLoopIndex: Z = 251
+    val _langastExpInvoke: Z = 251
 
-    val _langastExpStateSeq: Z = 252
+    val _langastExpInvokeNamed: Z = 252
 
-    val _langastExpStateSeqFragment: Z = 253
+    val _langastExpIf: Z = 253
 
-    val _langastExpResult: Z = 254
+    val _langastExpTypeCond: Z = 254
 
-    val _langastExpStrictPureBlock: Z = 255
+    val _langastExpSym: Z = 255
 
-    val _langastExpLabeled: Z = 256
+    val _langastExpFunParam: Z = 256
 
-    val _langastExpAssumeAgree: Z = 257
+    val _langastExpFun: Z = 257
 
-    val _langastExpAssertAgree: Z = 258
+    val _langastExpForYield: Z = 258
 
-    val _langastExpInfoFlowInvariant: Z = 259
+    val _langastExpQuantType: Z = 259
 
-    val _langastNamedArg: Z = 260
+    val _langastExpQuantRange: Z = 260
 
-    val _langastId: Z = 261
+    val _langastExpQuantEach: Z = 261
 
-    val _langastName: Z = 262
+    val _langastExpInput: Z = 262
 
-    val _langastBody: Z = 263
+    val _langastExpOld: Z = 263
 
-    val _langastAdtParam: Z = 264
+    val _langastExpRS: Z = 264
 
-    val _langastAnnotation: Z = 265
+    val _langastExpAt: Z = 265
 
-    val _langastRTypeVar: Z = 266
+    val _langastExpLoopIndex: Z = 266
 
-    val _langastRTypeArena: Z = 267
+    val _langastExpStateSeq: Z = 267
 
-    val _langastRTypePool: Z = 268
+    val _langastExpStateSeqFragment: Z = 268
 
-    val _langastRTypeScope: Z = 269
+    val _langastExpResult: Z = 269
 
-    val _langastRTypeRaw: Z = 270
+    val _langastExpStrictPureBlock: Z = 270
 
-    val _langastMethodSig: Z = 271
+    val _langastExpLabeled: Z = 271
 
-    val _langastParam: Z = 272
+    val _langastExpAssumeAgree: Z = 272
 
-    val _langastTypeParam: Z = 273
+    val _langastExpAssertAgree: Z = 273
 
-    val _langastAttr: Z = 274
+    val _langastExpInfoFlowInvariant: Z = 274
 
-    val _langastTypedAttr: Z = 275
+    val _langastNamedArg: Z = 275
 
-    val _langastResolvedAttr: Z = 276
+    val _langastId: Z = 276
 
-    val _langastResolvedInfoBuiltIn: Z = 277
+    val _langastName: Z = 277
 
-    val _langastResolvedInfoPackage: Z = 278
+    val _langastBody: Z = 278
 
-    val _langastResolvedInfoEnum: Z = 279
+    val _langastAdtParam: Z = 279
 
-    val _langastResolvedInfoEnumElement: Z = 280
+    val _langastAnnotation: Z = 280
 
-    val _langastResolvedInfoObject: Z = 281
+    val _langastRTypeVar: Z = 281
 
-    val _langastResolvedInfoVar: Z = 282
+    val _langastRTypeArena: Z = 282
 
-    val _langastResolvedInfoMethod: Z = 283
+    val _langastRTypePool: Z = 283
 
-    val _langastResolvedInfoMethods: Z = 284
+    val _langastRTypeScope: Z = 284
 
-    val _langastResolvedInfoTuple: Z = 285
+    val _langastRTypeRaw: Z = 285
 
-    val _langastResolvedInfoLocalVar: Z = 286
+    val _langastMethodSig: Z = 286
 
-    val _langastResolvedInfoFact: Z = 287
+    val _langastParam: Z = 287
 
-    val _langastResolvedInfoTheorem: Z = 288
+    val _langastTypeParam: Z = 288
 
-    val _langastResolvedInfoInv: Z = 289
+    val _langastAttr: Z = 289
 
-    val _langastTruthTableRow: Z = 290
+    val _langastTypedAttr: Z = 290
 
-    val _langastTruthTableAssignment: Z = 291
+    val _langastResolvedAttr: Z = 291
 
-    val _langastTruthTableConclusionValidity: Z = 292
+    val _langastResolvedInfoBuiltIn: Z = 292
 
-    val _langastTruthTableConclusionTautology: Z = 293
+    val _langastResolvedInfoPackage: Z = 293
 
-    val _langastTruthTableConclusionContradictory: Z = 294
+    val _langastResolvedInfoEnum: Z = 294
 
-    val _langastTruthTableConclusionContingent: Z = 295
+    val _langastResolvedInfoEnumElement: Z = 295
 
-    val _langastTypedName: Z = 296
+    val _langastResolvedInfoObject: Z = 296
 
-    val _langastTypedTuple: Z = 297
+    val _langastResolvedInfoVar: Z = 297
 
-    val _langastTypedFun: Z = 298
+    val _langastResolvedInfoMethod: Z = 298
 
-    val _langastTypedTypeVar: Z = 299
+    val _langastResolvedInfoMethods: Z = 299
 
-    val _langastTypedPackage: Z = 300
+    val _langastResolvedInfoTuple: Z = 300
 
-    val _langastTypedObject: Z = 301
+    val _langastResolvedInfoLocalVar: Z = 301
 
-    val _langastTypedEnum: Z = 302
+    val _langastResolvedInfoFact: Z = 302
 
-    val _langastTypedMethod: Z = 303
+    val _langastResolvedInfoTheorem: Z = 303
 
-    val _langastTypedMethods: Z = 304
+    val _langastResolvedInfoInv: Z = 304
 
-    val _langastTypedFact: Z = 305
+    val _langastTruthTableRow: Z = 305
 
-    val _langastTypedTheorem: Z = 306
+    val _langastTruthTableAssignment: Z = 306
 
-    val _langastTypedInv: Z = 307
+    val _langastTruthTableConclusionValidity: Z = 307
+
+    val _langastTruthTableConclusionTautology: Z = 308
+
+    val _langastTruthTableConclusionContradictory: Z = 309
+
+    val _langastTruthTableConclusionContingent: Z = 310
+
+    val _langastTypedName: Z = 311
+
+    val _langastTypedTuple: Z = 312
+
+    val _langastTypedFun: Z = 313
+
+    val _langastTypedTypeVar: Z = 314
+
+    val _langastTypedPackage: Z = 315
+
+    val _langastTypedObject: Z = 316
+
+    val _langastTypedEnum: Z = 317
+
+    val _langastTypedMethod: Z = 318
+
+    val _langastTypedMethods: Z = 319
+
+    val _langastTypedFact: Z = 320
+
+    val _langastTypedTheorem: Z = 321
+
+    val _langastTypedInv: Z = 322
 
   }
 
@@ -1773,6 +1820,21 @@ object MsgPack {
         case o: GclCompute => writeGclCompute(o)
         case o: GclMonitor => writeGclMonitor(o)
         case o: GclHandle => writeGclHandle(o)
+        case o: GclComposition => writeGclComposition(o)
+        case o: GclCompositionComponentAlias => writeGclCompositionComponentAlias(o)
+        case o: GclCompositionPortAlias => writeGclCompositionPortAlias(o)
+        case o: GclCompositionStateVarAlias => writeGclCompositionStateVarAlias(o)
+        case o: GclSchemaComponentRef => writeGclSchemaComponentRef(o)
+        case o: GclSchemaLabel => writeGclSchemaLabel(o)
+        case o: GclSchemaSplitJoin => writeGclSchemaSplitJoin(o)
+        case o: GclSchemaSequence => writeGclSchemaSequence(o)
+        case o: GclCompositionProperty => writeGclCompositionProperty(o)
+        case o: GclPropertyBinding => writeGclPropertyBinding(o)
+        case o: GclPointStart => writeGclPointStart(o)
+        case o: GclPointEnd => writeGclPointEnd(o)
+        case o: GclPointAt => writeGclPointAt(o)
+        case o: GclPointBefore => writeGclPointBefore(o)
+        case o: GclPointAfter => writeGclPointAfter(o)
         case o: GclTODO => writeGclTODO(o)
         case o: GclLib => writeGclLib(o)
         case o: InfoFlowClause => writeInfoFlowClause(o)
@@ -1788,6 +1850,12 @@ object MsgPack {
         case o: GclAssume => writeGclAssume(o)
         case o: GclGuarantee => writeGclGuarantee(o)
         case o: GclCaseStatement => writeGclCaseStatement(o)
+        case o: GclComposition => writeGclComposition(o)
+        case o: GclCompositionComponentAlias => writeGclCompositionComponentAlias(o)
+        case o: GclCompositionPortAlias => writeGclCompositionPortAlias(o)
+        case o: GclCompositionStateVarAlias => writeGclCompositionStateVarAlias(o)
+        case o: GclSchemaLabel => writeGclSchemaLabel(o)
+        case o: GclCompositionProperty => writeGclCompositionProperty(o)
         case o: InfoFlowClause => writeInfoFlowClause(o)
       }
     }
@@ -1801,6 +1869,7 @@ object MsgPack {
       writer.writeOption(o.integration, writeGclIntegration _)
       writer.writeOption(o.compute, writeGclCompute _)
       writer.writeOption(o.monitor, writeGclMonitor _)
+      writer.writeISZ(o.compositions, writeGclComposition _)
       writeAttr(o.attr)
     }
 
@@ -1833,6 +1902,7 @@ object MsgPack {
         case o: GclInvariant => writeGclInvariant(o)
         case o: GclAssume => writeGclAssume(o)
         case o: GclGuarantee => writeGclGuarantee(o)
+        case o: GclCompositionProperty => writeGclCompositionProperty(o)
         case o: InfoFlowClause => writeInfoFlowClause(o)
       }
     }
@@ -1923,6 +1993,125 @@ object MsgPack {
       writer.writeISZ(o.assumes, writeGclAssume _)
       writer.writeISZ(o.guarantees, writeGclGuarantee _)
       writer.writeISZ(o.cases, writeGclCaseStatement _)
+      writeAttr(o.attr)
+    }
+
+    def writeGclComposition(o: GclComposition): Unit = {
+      writer.writeZ(Constants.GclComposition)
+      writer.writeString(o.id)
+      writer.writeISZ(o.componentAliases, writeGclCompositionComponentAlias _)
+      writer.writeISZ(o.portAliases, writeGclCompositionPortAlias _)
+      writer.writeISZ(o.stateVarAliases, writeGclCompositionStateVarAlias _)
+      writer.writeISZ(o.schema, writeGclSchemaElement _)
+      writer.writeISZ(o.properties, writeGclCompositionProperty _)
+      writeAttr(o.attr)
+    }
+
+    def writeGclCompositionComponentAlias(o: GclCompositionComponentAlias): Unit = {
+      writer.writeZ(Constants.GclCompositionComponentAlias)
+      writer.writeString(o.name)
+      writeName(o.componentPath)
+      writeAttr(o.attr)
+    }
+
+    def writeGclCompositionPortAlias(o: GclCompositionPortAlias): Unit = {
+      writer.writeZ(Constants.GclCompositionPortAlias)
+      writer.writeString(o.name)
+      writeName(o.portPath)
+      writeAttr(o.attr)
+    }
+
+    def writeGclCompositionStateVarAlias(o: GclCompositionStateVarAlias): Unit = {
+      writer.writeZ(Constants.GclCompositionStateVarAlias)
+      writer.writeString(o.name)
+      writeName(o.stateVarPath)
+      writeAttr(o.attr)
+    }
+
+    def writeGclSchemaElement(o: GclSchemaElement): Unit = {
+      o match {
+        case o: GclSchemaComponentRef => writeGclSchemaComponentRef(o)
+        case o: GclSchemaLabel => writeGclSchemaLabel(o)
+        case o: GclSchemaSplitJoin => writeGclSchemaSplitJoin(o)
+      }
+    }
+
+    def writeGclSchemaComponentRef(o: GclSchemaComponentRef): Unit = {
+      writer.writeZ(Constants.GclSchemaComponentRef)
+      writeName(o.component)
+      writer.writeOption(o.occurrenceLabelOpt, writer.writeString _)
+      writeAttr(o.attr)
+    }
+
+    def writeGclSchemaLabel(o: GclSchemaLabel): Unit = {
+      writer.writeZ(Constants.GclSchemaLabel)
+      writer.writeString(o.id)
+      writeAttr(o.attr)
+    }
+
+    def writeGclSchemaSplitJoin(o: GclSchemaSplitJoin): Unit = {
+      writer.writeZ(Constants.GclSchemaSplitJoin)
+      writer.writeISZ(o.branches, writeGclSchemaSequence _)
+      writeAttr(o.attr)
+    }
+
+    def writeGclSchemaSequence(o: GclSchemaSequence): Unit = {
+      writer.writeZ(Constants.GclSchemaSequence)
+      writer.writeISZ(o.elements, writeGclSchemaElement _)
+      writeAttr(o.attr)
+    }
+
+    def writeGclCompositionProperty(o: GclCompositionProperty): Unit = {
+      writer.writeZ(Constants.GclCompositionProperty)
+      writer.writeString(o.id)
+      writer.writeOption(o.descriptor, writer.writeString _)
+      writer.writeISZ(o.bindings, writeGclPropertyBinding _)
+      writeAttr(o.attr)
+    }
+
+    def writeGclPropertyBinding(o: GclPropertyBinding): Unit = {
+      writer.writeZ(Constants.GclPropertyBinding)
+      writeGclSchemaPoint(o.point)
+      writer.writeOption(o.descriptor, writer.writeString _)
+      write_langastExp(o.exp)
+      writeAttr(o.attr)
+    }
+
+    def writeGclSchemaPoint(o: GclSchemaPoint): Unit = {
+      o match {
+        case o: GclPointStart => writeGclPointStart(o)
+        case o: GclPointEnd => writeGclPointEnd(o)
+        case o: GclPointAt => writeGclPointAt(o)
+        case o: GclPointBefore => writeGclPointBefore(o)
+        case o: GclPointAfter => writeGclPointAfter(o)
+      }
+    }
+
+    def writeGclPointStart(o: GclPointStart): Unit = {
+      writer.writeZ(Constants.GclPointStart)
+      writeAttr(o.attr)
+    }
+
+    def writeGclPointEnd(o: GclPointEnd): Unit = {
+      writer.writeZ(Constants.GclPointEnd)
+      writeAttr(o.attr)
+    }
+
+    def writeGclPointAt(o: GclPointAt): Unit = {
+      writer.writeZ(Constants.GclPointAt)
+      writer.writeString(o.label)
+      writeAttr(o.attr)
+    }
+
+    def writeGclPointBefore(o: GclPointBefore): Unit = {
+      writer.writeZ(Constants.GclPointBefore)
+      writer.writeString(o.occurrence)
+      writeAttr(o.attr)
+    }
+
+    def writeGclPointAfter(o: GclPointAfter): Unit = {
+      writer.writeZ(Constants.GclPointAfter)
+      writer.writeString(o.occurrence)
       writeAttr(o.attr)
     }
 
@@ -6043,6 +6232,21 @@ object MsgPack {
         case Constants.GclCompute => val r = readGclComputeT(T); return r
         case Constants.GclMonitor => val r = readGclMonitorT(T); return r
         case Constants.GclHandle => val r = readGclHandleT(T); return r
+        case Constants.GclComposition => val r = readGclCompositionT(T); return r
+        case Constants.GclCompositionComponentAlias => val r = readGclCompositionComponentAliasT(T); return r
+        case Constants.GclCompositionPortAlias => val r = readGclCompositionPortAliasT(T); return r
+        case Constants.GclCompositionStateVarAlias => val r = readGclCompositionStateVarAliasT(T); return r
+        case Constants.GclSchemaComponentRef => val r = readGclSchemaComponentRefT(T); return r
+        case Constants.GclSchemaLabel => val r = readGclSchemaLabelT(T); return r
+        case Constants.GclSchemaSplitJoin => val r = readGclSchemaSplitJoinT(T); return r
+        case Constants.GclSchemaSequence => val r = readGclSchemaSequenceT(T); return r
+        case Constants.GclCompositionProperty => val r = readGclCompositionPropertyT(T); return r
+        case Constants.GclPropertyBinding => val r = readGclPropertyBindingT(T); return r
+        case Constants.GclPointStart => val r = readGclPointStartT(T); return r
+        case Constants.GclPointEnd => val r = readGclPointEndT(T); return r
+        case Constants.GclPointAt => val r = readGclPointAtT(T); return r
+        case Constants.GclPointBefore => val r = readGclPointBeforeT(T); return r
+        case Constants.GclPointAfter => val r = readGclPointAfterT(T); return r
         case Constants.GclTODO => val r = readGclTODOT(T); return r
         case Constants.GclLib => val r = readGclLibT(T); return r
         case Constants.InfoFlowClause => val r = readInfoFlowClauseT(T); return r
@@ -6064,6 +6268,12 @@ object MsgPack {
         case Constants.GclAssume => val r = readGclAssumeT(T); return r
         case Constants.GclGuarantee => val r = readGclGuaranteeT(T); return r
         case Constants.GclCaseStatement => val r = readGclCaseStatementT(T); return r
+        case Constants.GclComposition => val r = readGclCompositionT(T); return r
+        case Constants.GclCompositionComponentAlias => val r = readGclCompositionComponentAliasT(T); return r
+        case Constants.GclCompositionPortAlias => val r = readGclCompositionPortAliasT(T); return r
+        case Constants.GclCompositionStateVarAlias => val r = readGclCompositionStateVarAliasT(T); return r
+        case Constants.GclSchemaLabel => val r = readGclSchemaLabelT(T); return r
+        case Constants.GclCompositionProperty => val r = readGclCompositionPropertyT(T); return r
         case Constants.InfoFlowClause => val r = readInfoFlowClauseT(T); return r
         case _ =>
           reader.error(i, s"$t is not a valid type of GclNamedElement.")
@@ -6088,8 +6298,9 @@ object MsgPack {
       val integration = reader.readOption(readGclIntegration _)
       val compute = reader.readOption(readGclCompute _)
       val monitor = reader.readOption(readGclMonitor _)
+      val compositions = reader.readISZ(readGclComposition _)
       val attr = readAttr()
-      return GclSubclause(state, methods, invariants, initializes, integration, compute, monitor, attr)
+      return GclSubclause(state, methods, invariants, initializes, integration, compute, monitor, compositions, attr)
     }
 
     def readGclMethod(): GclMethod = {
@@ -6153,6 +6364,7 @@ object MsgPack {
         case Constants.GclInvariant => val r = readGclInvariantT(T); return r
         case Constants.GclAssume => val r = readGclAssumeT(T); return r
         case Constants.GclGuarantee => val r = readGclGuaranteeT(T); return r
+        case Constants.GclCompositionProperty => val r = readGclCompositionPropertyT(T); return r
         case Constants.InfoFlowClause => val r = readInfoFlowClauseT(T); return r
         case _ =>
           reader.error(i, s"$t is not a valid type of GclClause.")
@@ -6332,6 +6544,257 @@ object MsgPack {
       val cases = reader.readISZ(readGclCaseStatement _)
       val attr = readAttr()
       return GclHandle(port, modifies, assumes, guarantees, cases, attr)
+    }
+
+    def readGclComposition(): GclComposition = {
+      val r = readGclCompositionT(F)
+      return r
+    }
+
+    def readGclCompositionT(typeParsed: B): GclComposition = {
+      if (!typeParsed) {
+        reader.expectZ(Constants.GclComposition)
+      }
+      val id = reader.readString()
+      val componentAliases = reader.readISZ(readGclCompositionComponentAlias _)
+      val portAliases = reader.readISZ(readGclCompositionPortAlias _)
+      val stateVarAliases = reader.readISZ(readGclCompositionStateVarAlias _)
+      val schema = reader.readISZ(readGclSchemaElement _)
+      val properties = reader.readISZ(readGclCompositionProperty _)
+      val attr = readAttr()
+      return GclComposition(id, componentAliases, portAliases, stateVarAliases, schema, properties, attr)
+    }
+
+    def readGclCompositionComponentAlias(): GclCompositionComponentAlias = {
+      val r = readGclCompositionComponentAliasT(F)
+      return r
+    }
+
+    def readGclCompositionComponentAliasT(typeParsed: B): GclCompositionComponentAlias = {
+      if (!typeParsed) {
+        reader.expectZ(Constants.GclCompositionComponentAlias)
+      }
+      val name = reader.readString()
+      val componentPath = readName()
+      val attr = readAttr()
+      return GclCompositionComponentAlias(name, componentPath, attr)
+    }
+
+    def readGclCompositionPortAlias(): GclCompositionPortAlias = {
+      val r = readGclCompositionPortAliasT(F)
+      return r
+    }
+
+    def readGclCompositionPortAliasT(typeParsed: B): GclCompositionPortAlias = {
+      if (!typeParsed) {
+        reader.expectZ(Constants.GclCompositionPortAlias)
+      }
+      val name = reader.readString()
+      val portPath = readName()
+      val attr = readAttr()
+      return GclCompositionPortAlias(name, portPath, attr)
+    }
+
+    def readGclCompositionStateVarAlias(): GclCompositionStateVarAlias = {
+      val r = readGclCompositionStateVarAliasT(F)
+      return r
+    }
+
+    def readGclCompositionStateVarAliasT(typeParsed: B): GclCompositionStateVarAlias = {
+      if (!typeParsed) {
+        reader.expectZ(Constants.GclCompositionStateVarAlias)
+      }
+      val name = reader.readString()
+      val stateVarPath = readName()
+      val attr = readAttr()
+      return GclCompositionStateVarAlias(name, stateVarPath, attr)
+    }
+
+    def readGclSchemaElement(): GclSchemaElement = {
+      val i = reader.curr
+      val t = reader.readZ()
+      t match {
+        case Constants.GclSchemaComponentRef => val r = readGclSchemaComponentRefT(T); return r
+        case Constants.GclSchemaLabel => val r = readGclSchemaLabelT(T); return r
+        case Constants.GclSchemaSplitJoin => val r = readGclSchemaSplitJoinT(T); return r
+        case _ =>
+          reader.error(i, s"$t is not a valid type of GclSchemaElement.")
+          val r = readGclSchemaSplitJoinT(T)
+          return r
+      }
+    }
+
+    def readGclSchemaComponentRef(): GclSchemaComponentRef = {
+      val r = readGclSchemaComponentRefT(F)
+      return r
+    }
+
+    def readGclSchemaComponentRefT(typeParsed: B): GclSchemaComponentRef = {
+      if (!typeParsed) {
+        reader.expectZ(Constants.GclSchemaComponentRef)
+      }
+      val component = readName()
+      val occurrenceLabelOpt = reader.readOption(reader.readString _)
+      val attr = readAttr()
+      return GclSchemaComponentRef(component, occurrenceLabelOpt, attr)
+    }
+
+    def readGclSchemaLabel(): GclSchemaLabel = {
+      val r = readGclSchemaLabelT(F)
+      return r
+    }
+
+    def readGclSchemaLabelT(typeParsed: B): GclSchemaLabel = {
+      if (!typeParsed) {
+        reader.expectZ(Constants.GclSchemaLabel)
+      }
+      val id = reader.readString()
+      val attr = readAttr()
+      return GclSchemaLabel(id, attr)
+    }
+
+    def readGclSchemaSplitJoin(): GclSchemaSplitJoin = {
+      val r = readGclSchemaSplitJoinT(F)
+      return r
+    }
+
+    def readGclSchemaSplitJoinT(typeParsed: B): GclSchemaSplitJoin = {
+      if (!typeParsed) {
+        reader.expectZ(Constants.GclSchemaSplitJoin)
+      }
+      val branches = reader.readISZ(readGclSchemaSequence _)
+      val attr = readAttr()
+      return GclSchemaSplitJoin(branches, attr)
+    }
+
+    def readGclSchemaSequence(): GclSchemaSequence = {
+      val r = readGclSchemaSequenceT(F)
+      return r
+    }
+
+    def readGclSchemaSequenceT(typeParsed: B): GclSchemaSequence = {
+      if (!typeParsed) {
+        reader.expectZ(Constants.GclSchemaSequence)
+      }
+      val elements = reader.readISZ(readGclSchemaElement _)
+      val attr = readAttr()
+      return GclSchemaSequence(elements, attr)
+    }
+
+    def readGclCompositionProperty(): GclCompositionProperty = {
+      val r = readGclCompositionPropertyT(F)
+      return r
+    }
+
+    def readGclCompositionPropertyT(typeParsed: B): GclCompositionProperty = {
+      if (!typeParsed) {
+        reader.expectZ(Constants.GclCompositionProperty)
+      }
+      val id = reader.readString()
+      val descriptor = reader.readOption(reader.readString _)
+      val bindings = reader.readISZ(readGclPropertyBinding _)
+      val attr = readAttr()
+      return GclCompositionProperty(id, descriptor, bindings, attr)
+    }
+
+    def readGclPropertyBinding(): GclPropertyBinding = {
+      val r = readGclPropertyBindingT(F)
+      return r
+    }
+
+    def readGclPropertyBindingT(typeParsed: B): GclPropertyBinding = {
+      if (!typeParsed) {
+        reader.expectZ(Constants.GclPropertyBinding)
+      }
+      val point = readGclSchemaPoint()
+      val descriptor = reader.readOption(reader.readString _)
+      val exp = read_langastExp()
+      val attr = readAttr()
+      return GclPropertyBinding(point, descriptor, exp, attr)
+    }
+
+    def readGclSchemaPoint(): GclSchemaPoint = {
+      val i = reader.curr
+      val t = reader.readZ()
+      t match {
+        case Constants.GclPointStart => val r = readGclPointStartT(T); return r
+        case Constants.GclPointEnd => val r = readGclPointEndT(T); return r
+        case Constants.GclPointAt => val r = readGclPointAtT(T); return r
+        case Constants.GclPointBefore => val r = readGclPointBeforeT(T); return r
+        case Constants.GclPointAfter => val r = readGclPointAfterT(T); return r
+        case _ =>
+          reader.error(i, s"$t is not a valid type of GclSchemaPoint.")
+          val r = readGclPointAfterT(T)
+          return r
+      }
+    }
+
+    def readGclPointStart(): GclPointStart = {
+      val r = readGclPointStartT(F)
+      return r
+    }
+
+    def readGclPointStartT(typeParsed: B): GclPointStart = {
+      if (!typeParsed) {
+        reader.expectZ(Constants.GclPointStart)
+      }
+      val attr = readAttr()
+      return GclPointStart(attr)
+    }
+
+    def readGclPointEnd(): GclPointEnd = {
+      val r = readGclPointEndT(F)
+      return r
+    }
+
+    def readGclPointEndT(typeParsed: B): GclPointEnd = {
+      if (!typeParsed) {
+        reader.expectZ(Constants.GclPointEnd)
+      }
+      val attr = readAttr()
+      return GclPointEnd(attr)
+    }
+
+    def readGclPointAt(): GclPointAt = {
+      val r = readGclPointAtT(F)
+      return r
+    }
+
+    def readGclPointAtT(typeParsed: B): GclPointAt = {
+      if (!typeParsed) {
+        reader.expectZ(Constants.GclPointAt)
+      }
+      val label = reader.readString()
+      val attr = readAttr()
+      return GclPointAt(label, attr)
+    }
+
+    def readGclPointBefore(): GclPointBefore = {
+      val r = readGclPointBeforeT(F)
+      return r
+    }
+
+    def readGclPointBeforeT(typeParsed: B): GclPointBefore = {
+      if (!typeParsed) {
+        reader.expectZ(Constants.GclPointBefore)
+      }
+      val occurrence = reader.readString()
+      val attr = readAttr()
+      return GclPointBefore(occurrence, attr)
+    }
+
+    def readGclPointAfter(): GclPointAfter = {
+      val r = readGclPointAfterT(F)
+      return r
+    }
+
+    def readGclPointAfterT(typeParsed: B): GclPointAfter = {
+      if (!typeParsed) {
+        reader.expectZ(Constants.GclPointAfter)
+      }
+      val occurrence = reader.readString()
+      val attr = readAttr()
+      return GclPointAfter(occurrence, attr)
     }
 
     def readGclTODO(): GclTODO = {
@@ -12803,6 +13266,261 @@ object MsgPack {
       return r
     }
     val r = to(data, fGclHandle _)
+    return r
+  }
+
+  def fromGclComposition(o: GclComposition, pooling: B): ISZ[U8] = {
+    val w = Writer.Default(MessagePack.writer(pooling))
+    w.writeGclComposition(o)
+    return w.result
+  }
+
+  def toGclComposition(data: ISZ[U8]): Either[GclComposition, MessagePack.ErrorMsg] = {
+    def fGclComposition(reader: Reader): GclComposition = {
+      val r = reader.readGclComposition()
+      return r
+    }
+    val r = to(data, fGclComposition _)
+    return r
+  }
+
+  def fromGclCompositionComponentAlias(o: GclCompositionComponentAlias, pooling: B): ISZ[U8] = {
+    val w = Writer.Default(MessagePack.writer(pooling))
+    w.writeGclCompositionComponentAlias(o)
+    return w.result
+  }
+
+  def toGclCompositionComponentAlias(data: ISZ[U8]): Either[GclCompositionComponentAlias, MessagePack.ErrorMsg] = {
+    def fGclCompositionComponentAlias(reader: Reader): GclCompositionComponentAlias = {
+      val r = reader.readGclCompositionComponentAlias()
+      return r
+    }
+    val r = to(data, fGclCompositionComponentAlias _)
+    return r
+  }
+
+  def fromGclCompositionPortAlias(o: GclCompositionPortAlias, pooling: B): ISZ[U8] = {
+    val w = Writer.Default(MessagePack.writer(pooling))
+    w.writeGclCompositionPortAlias(o)
+    return w.result
+  }
+
+  def toGclCompositionPortAlias(data: ISZ[U8]): Either[GclCompositionPortAlias, MessagePack.ErrorMsg] = {
+    def fGclCompositionPortAlias(reader: Reader): GclCompositionPortAlias = {
+      val r = reader.readGclCompositionPortAlias()
+      return r
+    }
+    val r = to(data, fGclCompositionPortAlias _)
+    return r
+  }
+
+  def fromGclCompositionStateVarAlias(o: GclCompositionStateVarAlias, pooling: B): ISZ[U8] = {
+    val w = Writer.Default(MessagePack.writer(pooling))
+    w.writeGclCompositionStateVarAlias(o)
+    return w.result
+  }
+
+  def toGclCompositionStateVarAlias(data: ISZ[U8]): Either[GclCompositionStateVarAlias, MessagePack.ErrorMsg] = {
+    def fGclCompositionStateVarAlias(reader: Reader): GclCompositionStateVarAlias = {
+      val r = reader.readGclCompositionStateVarAlias()
+      return r
+    }
+    val r = to(data, fGclCompositionStateVarAlias _)
+    return r
+  }
+
+  def fromGclSchemaElement(o: GclSchemaElement, pooling: B): ISZ[U8] = {
+    val w = Writer.Default(MessagePack.writer(pooling))
+    w.writeGclSchemaElement(o)
+    return w.result
+  }
+
+  def toGclSchemaElement(data: ISZ[U8]): Either[GclSchemaElement, MessagePack.ErrorMsg] = {
+    def fGclSchemaElement(reader: Reader): GclSchemaElement = {
+      val r = reader.readGclSchemaElement()
+      return r
+    }
+    val r = to(data, fGclSchemaElement _)
+    return r
+  }
+
+  def fromGclSchemaComponentRef(o: GclSchemaComponentRef, pooling: B): ISZ[U8] = {
+    val w = Writer.Default(MessagePack.writer(pooling))
+    w.writeGclSchemaComponentRef(o)
+    return w.result
+  }
+
+  def toGclSchemaComponentRef(data: ISZ[U8]): Either[GclSchemaComponentRef, MessagePack.ErrorMsg] = {
+    def fGclSchemaComponentRef(reader: Reader): GclSchemaComponentRef = {
+      val r = reader.readGclSchemaComponentRef()
+      return r
+    }
+    val r = to(data, fGclSchemaComponentRef _)
+    return r
+  }
+
+  def fromGclSchemaLabel(o: GclSchemaLabel, pooling: B): ISZ[U8] = {
+    val w = Writer.Default(MessagePack.writer(pooling))
+    w.writeGclSchemaLabel(o)
+    return w.result
+  }
+
+  def toGclSchemaLabel(data: ISZ[U8]): Either[GclSchemaLabel, MessagePack.ErrorMsg] = {
+    def fGclSchemaLabel(reader: Reader): GclSchemaLabel = {
+      val r = reader.readGclSchemaLabel()
+      return r
+    }
+    val r = to(data, fGclSchemaLabel _)
+    return r
+  }
+
+  def fromGclSchemaSplitJoin(o: GclSchemaSplitJoin, pooling: B): ISZ[U8] = {
+    val w = Writer.Default(MessagePack.writer(pooling))
+    w.writeGclSchemaSplitJoin(o)
+    return w.result
+  }
+
+  def toGclSchemaSplitJoin(data: ISZ[U8]): Either[GclSchemaSplitJoin, MessagePack.ErrorMsg] = {
+    def fGclSchemaSplitJoin(reader: Reader): GclSchemaSplitJoin = {
+      val r = reader.readGclSchemaSplitJoin()
+      return r
+    }
+    val r = to(data, fGclSchemaSplitJoin _)
+    return r
+  }
+
+  def fromGclSchemaSequence(o: GclSchemaSequence, pooling: B): ISZ[U8] = {
+    val w = Writer.Default(MessagePack.writer(pooling))
+    w.writeGclSchemaSequence(o)
+    return w.result
+  }
+
+  def toGclSchemaSequence(data: ISZ[U8]): Either[GclSchemaSequence, MessagePack.ErrorMsg] = {
+    def fGclSchemaSequence(reader: Reader): GclSchemaSequence = {
+      val r = reader.readGclSchemaSequence()
+      return r
+    }
+    val r = to(data, fGclSchemaSequence _)
+    return r
+  }
+
+  def fromGclCompositionProperty(o: GclCompositionProperty, pooling: B): ISZ[U8] = {
+    val w = Writer.Default(MessagePack.writer(pooling))
+    w.writeGclCompositionProperty(o)
+    return w.result
+  }
+
+  def toGclCompositionProperty(data: ISZ[U8]): Either[GclCompositionProperty, MessagePack.ErrorMsg] = {
+    def fGclCompositionProperty(reader: Reader): GclCompositionProperty = {
+      val r = reader.readGclCompositionProperty()
+      return r
+    }
+    val r = to(data, fGclCompositionProperty _)
+    return r
+  }
+
+  def fromGclPropertyBinding(o: GclPropertyBinding, pooling: B): ISZ[U8] = {
+    val w = Writer.Default(MessagePack.writer(pooling))
+    w.writeGclPropertyBinding(o)
+    return w.result
+  }
+
+  def toGclPropertyBinding(data: ISZ[U8]): Either[GclPropertyBinding, MessagePack.ErrorMsg] = {
+    def fGclPropertyBinding(reader: Reader): GclPropertyBinding = {
+      val r = reader.readGclPropertyBinding()
+      return r
+    }
+    val r = to(data, fGclPropertyBinding _)
+    return r
+  }
+
+  def fromGclSchemaPoint(o: GclSchemaPoint, pooling: B): ISZ[U8] = {
+    val w = Writer.Default(MessagePack.writer(pooling))
+    w.writeGclSchemaPoint(o)
+    return w.result
+  }
+
+  def toGclSchemaPoint(data: ISZ[U8]): Either[GclSchemaPoint, MessagePack.ErrorMsg] = {
+    def fGclSchemaPoint(reader: Reader): GclSchemaPoint = {
+      val r = reader.readGclSchemaPoint()
+      return r
+    }
+    val r = to(data, fGclSchemaPoint _)
+    return r
+  }
+
+  def fromGclPointStart(o: GclPointStart, pooling: B): ISZ[U8] = {
+    val w = Writer.Default(MessagePack.writer(pooling))
+    w.writeGclPointStart(o)
+    return w.result
+  }
+
+  def toGclPointStart(data: ISZ[U8]): Either[GclPointStart, MessagePack.ErrorMsg] = {
+    def fGclPointStart(reader: Reader): GclPointStart = {
+      val r = reader.readGclPointStart()
+      return r
+    }
+    val r = to(data, fGclPointStart _)
+    return r
+  }
+
+  def fromGclPointEnd(o: GclPointEnd, pooling: B): ISZ[U8] = {
+    val w = Writer.Default(MessagePack.writer(pooling))
+    w.writeGclPointEnd(o)
+    return w.result
+  }
+
+  def toGclPointEnd(data: ISZ[U8]): Either[GclPointEnd, MessagePack.ErrorMsg] = {
+    def fGclPointEnd(reader: Reader): GclPointEnd = {
+      val r = reader.readGclPointEnd()
+      return r
+    }
+    val r = to(data, fGclPointEnd _)
+    return r
+  }
+
+  def fromGclPointAt(o: GclPointAt, pooling: B): ISZ[U8] = {
+    val w = Writer.Default(MessagePack.writer(pooling))
+    w.writeGclPointAt(o)
+    return w.result
+  }
+
+  def toGclPointAt(data: ISZ[U8]): Either[GclPointAt, MessagePack.ErrorMsg] = {
+    def fGclPointAt(reader: Reader): GclPointAt = {
+      val r = reader.readGclPointAt()
+      return r
+    }
+    val r = to(data, fGclPointAt _)
+    return r
+  }
+
+  def fromGclPointBefore(o: GclPointBefore, pooling: B): ISZ[U8] = {
+    val w = Writer.Default(MessagePack.writer(pooling))
+    w.writeGclPointBefore(o)
+    return w.result
+  }
+
+  def toGclPointBefore(data: ISZ[U8]): Either[GclPointBefore, MessagePack.ErrorMsg] = {
+    def fGclPointBefore(reader: Reader): GclPointBefore = {
+      val r = reader.readGclPointBefore()
+      return r
+    }
+    val r = to(data, fGclPointBefore _)
+    return r
+  }
+
+  def fromGclPointAfter(o: GclPointAfter, pooling: B): ISZ[U8] = {
+    val w = Writer.Default(MessagePack.writer(pooling))
+    w.writeGclPointAfter(o)
+    return w.result
+  }
+
+  def toGclPointAfter(data: ISZ[U8]): Either[GclPointAfter, MessagePack.ErrorMsg] = {
+    def fGclPointAfter(reader: Reader): GclPointAfter = {
+      val r = reader.readGclPointAfter()
+      return r
+    }
+    val r = to(data, fGclPointAfter _)
     return r
   }
 
