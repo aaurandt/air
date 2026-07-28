@@ -725,6 +725,7 @@ object Transformer {
         case o: org.sireum.lang.ast.Exp.This => return pre_langastExpThis(ctx, o)
         case o: org.sireum.lang.ast.Exp.Super => return pre_langastExpSuper(ctx, o)
         case o: org.sireum.lang.ast.Exp.Unary => return pre_langastExpUnary(ctx, o)
+        case o: org.sireum.lang.ast.Exp.UnaryTemporal => return pre_langastExpUnaryTemporal(ctx, o)
         case o: org.sireum.lang.ast.Exp.Binary => return pre_langastExpBinary(ctx, o)
         case o: org.sireum.lang.ast.Exp.Ident => return pre_langastExpIdent(ctx, o)
         case o: org.sireum.lang.ast.Exp.Eta => return pre_langastExpEta(ctx, o)
@@ -840,6 +841,10 @@ object Transformer {
     }
 
     @pure def pre_langastExpUnary(ctx: Context, o: org.sireum.lang.ast.Exp.Unary): PreResult[Context, org.sireum.lang.ast.Exp] = {
+      return PreResult(ctx, T, None())
+    }
+
+    @pure def pre_langastExpUnaryTemporal(ctx: Context, o: org.sireum.lang.ast.Exp.UnaryTemporal): PreResult[Context, org.sireum.lang.ast.Exp] = {
       return PreResult(ctx, T, None())
     }
 
@@ -5368,6 +5373,7 @@ object Transformer {
         case o: org.sireum.lang.ast.Exp.This => return post_langastExpThis(ctx, o)
         case o: org.sireum.lang.ast.Exp.Super => return post_langastExpSuper(ctx, o)
         case o: org.sireum.lang.ast.Exp.Unary => return post_langastExpUnary(ctx, o)
+        case o: org.sireum.lang.ast.Exp.UnaryTemporal => return post_langastExpUnaryTemporal(ctx, o)
         case o: org.sireum.lang.ast.Exp.Binary => return post_langastExpBinary(ctx, o)
         case o: org.sireum.lang.ast.Exp.Ident => return post_langastExpIdent(ctx, o)
         case o: org.sireum.lang.ast.Exp.Eta => return post_langastExpEta(ctx, o)
@@ -5483,6 +5489,10 @@ object Transformer {
     }
 
     @pure def post_langastExpUnary(ctx: Context, o: org.sireum.lang.ast.Exp.Unary): TPostResult[Context, org.sireum.lang.ast.Exp] = {
+      return TPostResult(ctx, None())
+    }
+
+    @pure def post_langastExpUnaryTemporal(ctx: Context, o: org.sireum.lang.ast.Exp.UnaryTemporal): TPostResult[Context, org.sireum.lang.ast.Exp] = {
       return TPostResult(ctx, None())
     }
 
@@ -10864,6 +10874,13 @@ import Transformer._
           else
             TPostResult(r1.ctx, None())
         case o2: org.sireum.lang.ast.Exp.Unary =>
+          val r0: TPostResult[Context, org.sireum.lang.ast.Exp] = transform_langastExp(preR.ctx, o2.exp)
+          val r1: TPostResult[Context, org.sireum.lang.ast.ResolvedAttr] = transform_langastResolvedAttr(r0.ctx, o2.attr)
+          if (hasChanged || r0.resultOpt.nonEmpty || r1.resultOpt.nonEmpty)
+            TPostResult(r1.ctx, Some(o2(exp = r0.resultOpt.getOrElse(o2.exp), attr = r1.resultOpt.getOrElse(o2.attr))))
+          else
+            TPostResult(r1.ctx, None())
+        case o2: org.sireum.lang.ast.Exp.UnaryTemporal =>
           val r0: TPostResult[Context, org.sireum.lang.ast.Exp] = transform_langastExp(preR.ctx, o2.exp)
           val r1: TPostResult[Context, org.sireum.lang.ast.ResolvedAttr] = transform_langastResolvedAttr(r0.ctx, o2.attr)
           if (hasChanged || r0.resultOpt.nonEmpty || r1.resultOpt.nonEmpty)
