@@ -2066,6 +2066,8 @@ object MsgPack {
     def writeGclCompositionProperty(o: GclCompositionProperty): Unit = {
       writer.writeZ(Constants.GclCompositionProperty)
       writer.writeString(o.id)
+      writer.writeB(o.isAbstract)
+      writer.writeISZ(o.parents, writer.writeString _)
       writer.writeOption(o.descriptor, writer.writeString _)
       writer.writeISZ(o.bindings, writeGclPropertyBinding _)
       writeAttr(o.attr)
@@ -6707,10 +6709,12 @@ object MsgPack {
         reader.expectZ(Constants.GclCompositionProperty)
       }
       val id = reader.readString()
+      val isAbstract = reader.readB()
+      val parents = reader.readISZ(reader.readString _)
       val descriptor = reader.readOption(reader.readString _)
       val bindings = reader.readISZ(readGclPropertyBinding _)
       val attr = readAttr()
-      return GclCompositionProperty(id, descriptor, bindings, attr)
+      return GclCompositionProperty(id, isAbstract, parents, descriptor, bindings, attr)
     }
 
     def readGclPropertyBinding(): GclPropertyBinding = {
