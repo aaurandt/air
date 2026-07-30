@@ -3736,6 +3736,7 @@ object JSON {
         case o: org.sireum.lang.ast.Exp.Super => return print_langastExpSuper(o)
         case o: org.sireum.lang.ast.Exp.Unary => return print_langastExpUnary(o)
         case o: org.sireum.lang.ast.Exp.UnaryTemporal => return print_langastExpUnaryTemporal(o)
+        case o: org.sireum.lang.ast.Exp.BinaryTemporal => return print_langastExpBinaryTemporal(o)
         case o: org.sireum.lang.ast.Exp.Binary => return print_langastExpBinary(o)
         case o: org.sireum.lang.ast.Exp.Ident => return print_langastExpIdent(o)
         case o: org.sireum.lang.ast.Exp.Eta => return print_langastExpEta(o)
@@ -3904,6 +3905,31 @@ object JSON {
         ("op", print_langastExpUnaryTemporalOpType(o.op)),
         ("exp", print_langastExp(o.exp)),
         ("intvl", printString(o.intvl)),
+        ("attr", print_langastResolvedAttr(o.attr)),
+        ("opPosOpt", printOption(F, o.opPosOpt, printPosition _))
+      ))
+    }
+
+    @pure def print_langastExpBinaryTemporalOpType(o: org.sireum.lang.ast.Exp.BinaryTemporalOp.Type): ST = {
+      val value: String = o match {
+        case org.sireum.lang.ast.Exp.BinaryTemporalOp.Until => "Until"
+        case org.sireum.lang.ast.Exp.BinaryTemporalOp.Release => "Release"
+        case org.sireum.lang.ast.Exp.BinaryTemporalOp.Since => "Since"
+        case org.sireum.lang.ast.Exp.BinaryTemporalOp.Trigger => "Trigger"
+      }
+      return printObject(ISZ(
+        ("type", printString("org.sireum.lang.ast.Exp.BinaryTemporalOp")),
+        ("value", printString(value))
+      ))
+    }
+
+    @pure def print_langastExpBinaryTemporal(o: org.sireum.lang.ast.Exp.BinaryTemporal): ST = {
+      return printObject(ISZ(
+        ("type", st""""org.sireum.lang.ast.Exp.BinaryTemporal""""),
+        ("left", print_langastExp(o.left)),
+        ("op", print_langastExpBinaryTemporalOpType(o.op)),
+        ("intvl", printString(o.intvl)),
+        ("right", print_langastExp(o.right)),
         ("attr", print_langastResolvedAttr(o.attr)),
         ("opPosOpt", printOption(F, o.opPosOpt, printPosition _))
       ))
@@ -4440,6 +4466,10 @@ object JSON {
         case org.sireum.lang.ast.ResolvedInfo.BuiltIn.Kind.UnaryGlobally => "UnaryGlobally"
         case org.sireum.lang.ast.ResolvedInfo.BuiltIn.Kind.UnaryOnce => "UnaryOnce"
         case org.sireum.lang.ast.ResolvedInfo.BuiltIn.Kind.UnaryHistorically => "UnaryHistorically"
+        case org.sireum.lang.ast.ResolvedInfo.BuiltIn.Kind.BinaryUntil => "BinaryUntil"
+        case org.sireum.lang.ast.ResolvedInfo.BuiltIn.Kind.BinaryRelease => "BinaryRelease"
+        case org.sireum.lang.ast.ResolvedInfo.BuiltIn.Kind.BinarySince => "BinarySince"
+        case org.sireum.lang.ast.ResolvedInfo.BuiltIn.Kind.BinaryTrigger => "BinaryTrigger"
       }
       return printObject(ISZ(
         ("type", printString("org.sireum.lang.ast.ResolvedInfo.BuiltIn.Kind")),
@@ -11867,7 +11897,7 @@ object JSON {
     }
 
     def parse_langastExp(): org.sireum.lang.ast.Exp = {
-      val t = parser.parseObjectTypes(ISZ("org.sireum.lang.ast.ProofAst.StepId.Num", "org.sireum.lang.ast.ProofAst.StepId.Str", "org.sireum.lang.ast.Exp.LitB", "org.sireum.lang.ast.Exp.LitC", "org.sireum.lang.ast.Exp.LitZ", "org.sireum.lang.ast.Exp.LitF32", "org.sireum.lang.ast.Exp.LitF64", "org.sireum.lang.ast.Exp.LitR", "org.sireum.lang.ast.Exp.LitString", "org.sireum.lang.ast.Exp.StringInterpolate", "org.sireum.lang.ast.Exp.This", "org.sireum.lang.ast.Exp.Super", "org.sireum.lang.ast.Exp.Unary", "org.sireum.lang.ast.Exp.UnaryTemporal", "org.sireum.lang.ast.Exp.Binary", "org.sireum.lang.ast.Exp.Ident", "org.sireum.lang.ast.Exp.Eta", "org.sireum.lang.ast.Exp.Tuple", "org.sireum.lang.ast.Exp.Select", "org.sireum.lang.ast.Exp.Invoke", "org.sireum.lang.ast.Exp.InvokeNamed", "org.sireum.lang.ast.Exp.If", "org.sireum.lang.ast.Exp.TypeCond", "org.sireum.lang.ast.Exp.Sym", "org.sireum.lang.ast.Exp.Fun", "org.sireum.lang.ast.Exp.ForYield", "org.sireum.lang.ast.Exp.QuantType", "org.sireum.lang.ast.Exp.QuantRange", "org.sireum.lang.ast.Exp.QuantEach", "org.sireum.lang.ast.Exp.Input", "org.sireum.lang.ast.Exp.Old", "org.sireum.lang.ast.Exp.RS", "org.sireum.lang.ast.Exp.At", "org.sireum.lang.ast.Exp.LoopIndex", "org.sireum.lang.ast.Exp.StateSeq", "org.sireum.lang.ast.Exp.Result", "org.sireum.lang.ast.Exp.StrictPureBlock", "org.sireum.lang.ast.Exp.Labeled", "org.sireum.lang.ast.Exp.AssumeAgree", "org.sireum.lang.ast.Exp.AssertAgree", "org.sireum.lang.ast.Exp.InfoFlowInvariant"))
+      val t = parser.parseObjectTypes(ISZ("org.sireum.lang.ast.ProofAst.StepId.Num", "org.sireum.lang.ast.ProofAst.StepId.Str", "org.sireum.lang.ast.Exp.LitB", "org.sireum.lang.ast.Exp.LitC", "org.sireum.lang.ast.Exp.LitZ", "org.sireum.lang.ast.Exp.LitF32", "org.sireum.lang.ast.Exp.LitF64", "org.sireum.lang.ast.Exp.LitR", "org.sireum.lang.ast.Exp.LitString", "org.sireum.lang.ast.Exp.StringInterpolate", "org.sireum.lang.ast.Exp.This", "org.sireum.lang.ast.Exp.Super", "org.sireum.lang.ast.Exp.Unary", "org.sireum.lang.ast.Exp.UnaryTemporal", "org.sireum.lang.ast.Exp.BinaryTemporal", "org.sireum.lang.ast.Exp.Binary", "org.sireum.lang.ast.Exp.Ident", "org.sireum.lang.ast.Exp.Eta", "org.sireum.lang.ast.Exp.Tuple", "org.sireum.lang.ast.Exp.Select", "org.sireum.lang.ast.Exp.Invoke", "org.sireum.lang.ast.Exp.InvokeNamed", "org.sireum.lang.ast.Exp.If", "org.sireum.lang.ast.Exp.TypeCond", "org.sireum.lang.ast.Exp.Sym", "org.sireum.lang.ast.Exp.Fun", "org.sireum.lang.ast.Exp.ForYield", "org.sireum.lang.ast.Exp.QuantType", "org.sireum.lang.ast.Exp.QuantRange", "org.sireum.lang.ast.Exp.QuantEach", "org.sireum.lang.ast.Exp.Input", "org.sireum.lang.ast.Exp.Old", "org.sireum.lang.ast.Exp.RS", "org.sireum.lang.ast.Exp.At", "org.sireum.lang.ast.Exp.LoopIndex", "org.sireum.lang.ast.Exp.StateSeq", "org.sireum.lang.ast.Exp.Result", "org.sireum.lang.ast.Exp.StrictPureBlock", "org.sireum.lang.ast.Exp.Labeled", "org.sireum.lang.ast.Exp.AssumeAgree", "org.sireum.lang.ast.Exp.AssertAgree", "org.sireum.lang.ast.Exp.InfoFlowInvariant"))
       t.native match {
         case "org.sireum.lang.ast.ProofAst.StepId.Num" => val r = parse_langastProofAstStepIdNumT(T); return r
         case "org.sireum.lang.ast.ProofAst.StepId.Str" => val r = parse_langastProofAstStepIdStrT(T); return r
@@ -11883,6 +11913,7 @@ object JSON {
         case "org.sireum.lang.ast.Exp.Super" => val r = parse_langastExpSuperT(T); return r
         case "org.sireum.lang.ast.Exp.Unary" => val r = parse_langastExpUnaryT(T); return r
         case "org.sireum.lang.ast.Exp.UnaryTemporal" => val r = parse_langastExpUnaryTemporalT(T); return r
+        case "org.sireum.lang.ast.Exp.BinaryTemporal" => val r = parse_langastExpBinaryTemporalT(T); return r
         case "org.sireum.lang.ast.Exp.Binary" => val r = parse_langastExpBinaryT(T); return r
         case "org.sireum.lang.ast.Exp.Ident" => val r = parse_langastExpIdentT(T); return r
         case "org.sireum.lang.ast.Exp.Eta" => val r = parse_langastExpEtaT(T); return r
@@ -12207,6 +12238,57 @@ object JSON {
       val opPosOpt = parser.parseOption(parser.parsePosition _)
       parser.parseObjectNext()
       return org.sireum.lang.ast.Exp.UnaryTemporal(op, exp, intvl, attr, opPosOpt)
+    }
+
+    def parse_langastExpBinaryTemporalOpType(): org.sireum.lang.ast.Exp.BinaryTemporalOp.Type = {
+      val r = parse_langastExpBinaryTemporalOpT(F)
+      return r
+    }
+
+    def parse_langastExpBinaryTemporalOpT(typeParsed: B): org.sireum.lang.ast.Exp.BinaryTemporalOp.Type = {
+      if (!typeParsed) {
+        parser.parseObjectType("org.sireum.lang.ast.Exp.BinaryTemporalOp")
+      }
+      parser.parseObjectKey("value")
+      var i = parser.offset
+      val s = parser.parseString()
+      parser.parseObjectNext()
+      org.sireum.lang.ast.Exp.BinaryTemporalOp.byName(s) match {
+        case Some(r) => return r
+        case _ =>
+          parser.parseException(i, s"Invalid element name '$s' for org.sireum.lang.ast.Exp.BinaryTemporalOp.")
+          return org.sireum.lang.ast.Exp.BinaryTemporalOp.byOrdinal(0).get
+      }
+    }
+
+    def parse_langastExpBinaryTemporal(): org.sireum.lang.ast.Exp.BinaryTemporal = {
+      val r = parse_langastExpBinaryTemporalT(F)
+      return r
+    }
+
+    def parse_langastExpBinaryTemporalT(typeParsed: B): org.sireum.lang.ast.Exp.BinaryTemporal = {
+      if (!typeParsed) {
+        parser.parseObjectType("org.sireum.lang.ast.Exp.BinaryTemporal")
+      }
+      parser.parseObjectKey("left")
+      val left = parse_langastExp()
+      parser.parseObjectNext()
+      parser.parseObjectKey("op")
+      val op = parse_langastExpBinaryTemporalOpType()
+      parser.parseObjectNext()
+      parser.parseObjectKey("intvl")
+      val intvl = parser.parseString()
+      parser.parseObjectNext()
+      parser.parseObjectKey("right")
+      val right = parse_langastExp()
+      parser.parseObjectNext()
+      parser.parseObjectKey("attr")
+      val attr = parse_langastResolvedAttr()
+      parser.parseObjectNext()
+      parser.parseObjectKey("opPosOpt")
+      val opPosOpt = parser.parseOption(parser.parsePosition _)
+      parser.parseObjectNext()
+      return org.sireum.lang.ast.Exp.BinaryTemporal(left, op, intvl, right, attr, opPosOpt)
     }
 
     def parse_langastExpRef(): org.sireum.lang.ast.Exp.Ref = {
@@ -20284,6 +20366,24 @@ object JSON {
       return r
     }
     val r = to(s, f_langastExpUnaryTemporal _)
+    return r
+  }
+
+  def from_langastExpBinaryTemporal(o: org.sireum.lang.ast.Exp.BinaryTemporal, isCompact: B): String = {
+    val st = Printer.print_langastExpBinaryTemporal(o)
+    if (isCompact) {
+      return st.renderCompact
+    } else {
+      return st.render
+    }
+  }
+
+  def to_langastExpBinaryTemporal(s: String): Either[org.sireum.lang.ast.Exp.BinaryTemporal, Json.ErrorMsg] = {
+    def f_langastExpBinaryTemporal(parser: Parser): org.sireum.lang.ast.Exp.BinaryTemporal = {
+      val r = parser.parse_langastExpBinaryTemporal()
+      return r
+    }
+    val r = to(s, f_langastExpBinaryTemporal _)
     return r
   }
 

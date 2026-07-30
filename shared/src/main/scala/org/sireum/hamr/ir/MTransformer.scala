@@ -421,6 +421,10 @@ object MTransformer {
 
   val PostResult_langastExpUnaryTemporal: MOption[org.sireum.lang.ast.Exp] = MNone()
 
+  val PreResult_langastExpBinaryTemporal: PreResult[org.sireum.lang.ast.Exp] = PreResult(T, MNone())
+
+  val PostResult_langastExpBinaryTemporal: MOption[org.sireum.lang.ast.Exp] = MNone()
+
   val PreResult_langastExpBinary: PreResult[org.sireum.lang.ast.Exp] = PreResult(T, MNone())
 
   val PostResult_langastExpBinary: MOption[org.sireum.lang.ast.Exp] = MNone()
@@ -2162,6 +2166,7 @@ import MTransformer._
       case o: org.sireum.lang.ast.Exp.Super => return pre_langastExpSuper(o)
       case o: org.sireum.lang.ast.Exp.Unary => return pre_langastExpUnary(o)
       case o: org.sireum.lang.ast.Exp.UnaryTemporal => return pre_langastExpUnaryTemporal(o)
+      case o: org.sireum.lang.ast.Exp.BinaryTemporal => return pre_langastExpBinaryTemporal(o)
       case o: org.sireum.lang.ast.Exp.Binary => return pre_langastExpBinary(o)
       case o: org.sireum.lang.ast.Exp.Ident => return pre_langastExpIdent(o)
       case o: org.sireum.lang.ast.Exp.Eta => return pre_langastExpEta(o)
@@ -2282,6 +2287,10 @@ import MTransformer._
 
   def pre_langastExpUnaryTemporal(o: org.sireum.lang.ast.Exp.UnaryTemporal): PreResult[org.sireum.lang.ast.Exp] = {
     return PreResult_langastExpUnaryTemporal
+  }
+
+  def pre_langastExpBinaryTemporal(o: org.sireum.lang.ast.Exp.BinaryTemporal): PreResult[org.sireum.lang.ast.Exp] = {
+    return PreResult_langastExpBinaryTemporal
   }
 
   def pre_langastExpRef(o: org.sireum.lang.ast.Exp.Ref): PreResult[org.sireum.lang.ast.Exp.Ref] = {
@@ -6810,6 +6819,7 @@ import MTransformer._
       case o: org.sireum.lang.ast.Exp.Super => return post_langastExpSuper(o)
       case o: org.sireum.lang.ast.Exp.Unary => return post_langastExpUnary(o)
       case o: org.sireum.lang.ast.Exp.UnaryTemporal => return post_langastExpUnaryTemporal(o)
+      case o: org.sireum.lang.ast.Exp.BinaryTemporal => return post_langastExpBinaryTemporal(o)
       case o: org.sireum.lang.ast.Exp.Binary => return post_langastExpBinary(o)
       case o: org.sireum.lang.ast.Exp.Ident => return post_langastExpIdent(o)
       case o: org.sireum.lang.ast.Exp.Eta => return post_langastExpEta(o)
@@ -6930,6 +6940,10 @@ import MTransformer._
 
   def post_langastExpUnaryTemporal(o: org.sireum.lang.ast.Exp.UnaryTemporal): MOption[org.sireum.lang.ast.Exp] = {
     return PostResult_langastExpUnaryTemporal
+  }
+
+  def post_langastExpBinaryTemporal(o: org.sireum.lang.ast.Exp.BinaryTemporal): MOption[org.sireum.lang.ast.Exp] = {
+    return PostResult_langastExpBinaryTemporal
   }
 
   def post_langastExpRef(o: org.sireum.lang.ast.Exp.Ref): MOption[org.sireum.lang.ast.Exp.Ref] = {
@@ -12283,6 +12297,14 @@ import MTransformer._
           val r1: MOption[org.sireum.lang.ast.ResolvedAttr] = transform_langastResolvedAttr(o2.attr)
           if (hasChanged || r0.nonEmpty || r1.nonEmpty)
             MSome(o2(exp = r0.getOrElse(o2.exp), attr = r1.getOrElse(o2.attr)))
+          else
+            MNone()
+        case o2: org.sireum.lang.ast.Exp.BinaryTemporal =>
+          val r0: MOption[org.sireum.lang.ast.Exp] = transform_langastExp(o2.left)
+          val r1: MOption[org.sireum.lang.ast.Exp] = transform_langastExp(o2.right)
+          val r2: MOption[org.sireum.lang.ast.ResolvedAttr] = transform_langastResolvedAttr(o2.attr)
+          if (hasChanged || r0.nonEmpty || r1.nonEmpty || r2.nonEmpty)
+            MSome(o2(left = r0.getOrElse(o2.left), right = r1.getOrElse(o2.right), attr = r2.getOrElse(o2.attr)))
           else
             MNone()
         case o2: org.sireum.lang.ast.Exp.Binary =>
